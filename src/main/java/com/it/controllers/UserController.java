@@ -2,6 +2,7 @@ package com.it.controllers;
 
 import com.it.database.IUserRepository;
 import com.it.model.User;
+import com.it.session.SessionObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
+
 @Controller
 @RequestMapping(path = "/user")
 public class UserController {
+
+    @Resource
+    SessionObject sessionObject;
 
     @Autowired
     IUserRepository userRepository;
@@ -26,15 +32,20 @@ public class UserController {
     @PostMapping
     public String authenticate(@ModelAttribute User user) {
         boolean authResult = userRepository.authenticate(user);
-        if(authResult){
-            return "redirect:/main";
-        }else{
+        if (authResult) {
+            this.sessionObject.setLogged(true);
+            return "myaccount";
+        } else {
             return "redirect:/user";
         }
     }
 
     @GetMapping("/myaccount")
-    public String myAccount(){
-        return "myaccount";
+    public String myAccount() {
+        if (sessionObject.isLogged()) {
+            return "myaccount";
+        } else {
+            return "redirect:/user";
+        }
     }
 }

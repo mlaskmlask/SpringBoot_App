@@ -47,4 +47,16 @@ public class BookRepositoryImpl implements IBookRepository {
         }
         return otherBooks;
     }
+
+    @Override
+    public List<Book> getBooksByFilter(String filter) {
+        List<Book> filteredBooks = new ArrayList<>();
+        for (Book currentBook : this.books){
+            if(currentBook.getTitle().toUpperCase().contains(filter.toUpperCase())||
+            currentBook.getAuthor().toUpperCase().contains(filter.toUpperCase())){
+                filteredBooks.add(currentBook);
+            }
+        }
+        return filteredBooks;
+    }
 }
