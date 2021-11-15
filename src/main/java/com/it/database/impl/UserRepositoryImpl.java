@@ -14,20 +14,20 @@ public class UserRepositoryImpl implements IUserRepository {
     private final List<User> userList = new ArrayList<>();
 
     UserRepositoryImpl() {
-        userList.add(new User("admin", DigestUtils.md5Hex("admin")));
+        userList.add(new User("Maja", "Laskowska", "admin", DigestUtils.md5Hex("admin")));
     }
 
     @Override
-    public boolean authenticate(User user) {
+    public User authenticate(User user) {
         for (User currentUser : this.userList) {
             if (currentUser.getLogin().equals(user.getLogin())) {
                 if (currentUser.getPass().equals(DigestUtils.md5Hex(user.getPass()))) {
-                    return true;
+                    return currentUser;
                 } else {
-                    return false;
+                    return null;
                 }
             }
         }
-        return false;
+        return null;
     }
 }

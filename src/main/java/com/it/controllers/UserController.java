@@ -31,9 +31,9 @@ public class UserController {
 
     @PostMapping
     public String authenticate(@ModelAttribute User user) {
-        boolean authResult = userRepository.authenticate(user);
-        if (authResult) {
-            this.sessionObject.setLogged(true);
+        User loggedUser = userRepository.authenticate(user);
+        if (loggedUser != null) {
+            this.sessionObject.setUser(loggedUser);
             return "myaccount";
         } else {
             return "redirect:/user";
@@ -47,5 +47,11 @@ public class UserController {
         } else {
             return "redirect:/user";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        this.sessionObject.setUser(null);
+        return "redirect:/user";
     }
 }

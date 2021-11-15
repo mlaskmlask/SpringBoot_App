@@ -4,6 +4,6 @@ import com.it.model.User;
 
 public interface IUserRepository {
 
-    boolean authenticate(User user);
+    User authenticate(User user);
 
 }

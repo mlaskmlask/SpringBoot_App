@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Kontakt</title>
-<style>
+    <style>
 body{
 background-image: url(/cosmos.jpg);
 background-attachment: scroll;
@@ -44,7 +44,15 @@ color: white;
 font-size: 20px;
 text-align: center;
 }
-</style>
+#mail{
+font-family: Arial, sans-serif;
+color: white;
+font-size: 20px;
+text-align: center;
+display: block;
+}
+
+    </style>
 </head>
 <body>
 <h1>Books</h1>
@@ -55,13 +63,13 @@ text-align: center;
     <a href="/main/other">Inne</a>
     <a href="/main/contact">Kontakt</a>
     <a href="/user/myaccount">Moje konto</a>
-
+    <a href="/user/logout">Wyloguj się</a>
 </div>
 <div id="contact">
-<p>Books</p>
-<p>ul. Sadowa 50</p>
-<p>30-320 Kraków</p>
-<p>books@books.pl</p>
+    <p>Books</p>
+    <p>ul. Sadowa 50</p>
+    <p>30-320 Kraków</p>
+    <a href="mailto:books@books.com" id="mail">books@books.com</a>
 </div>
 </body>
 </html>
