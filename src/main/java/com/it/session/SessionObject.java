@@ -8,6 +8,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 public class SessionObject {
     private User user = null;
+    private String info = null;
 
     public boolean isLogged() {
         return !(this.user == null);
@@ -19,5 +20,13 @@ public class SessionObject {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

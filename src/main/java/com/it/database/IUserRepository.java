@@ -9,4 +9,8 @@ public interface IUserRepository {
     User updateUserData(User user);
 
     User updateUserPass (User user);
+
+    boolean checkIfLoginExists (String login);
+
+    void addUser (User user);
 }
