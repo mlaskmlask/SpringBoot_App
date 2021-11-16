@@ -10,38 +10,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/main")
 public class CommonController {
+
     @Autowired
     IBookRepository bookRepository;
 
-    @GetMapping
+    @RequestMapping(value = "main", method = RequestMethod.GET)
     public String main(Model model) {
         model.addAttribute("books", this.bookRepository.getAllBooks());
         return "main";
     }
 
-    @GetMapping("/java")
+    @RequestMapping(value = "/java", method = RequestMethod.GET)
     public String java(Model model) {
         model.addAttribute("books", this.bookRepository.getJavaBooks());
         return "main";
     }
 
-    @GetMapping("/other")
+    @RequestMapping(value = "/other", method = RequestMethod.GET)
     public String other(Model model) {
         model.addAttribute("books", this.bookRepository.getOtherBooks());
         return "main";
     }
 
-    @PostMapping("/filter")
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
     public String filter(@RequestParam String filter, Model model) {
         List<Book> filteredBooks = this.bookRepository.getBooksByFilter(filter);
         model.addAttribute("books", filteredBooks);
         return "main";
     }
 
-    @GetMapping("/contact")
+    @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public String contact(){
+
         return "contact";
     }
 }

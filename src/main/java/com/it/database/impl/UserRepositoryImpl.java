@@ -30,4 +30,27 @@ public class UserRepositoryImpl implements IUserRepository {
         }
         return null;
     }
+
+    @Override
+    public User updateUserData(User user) {
+        for (User currentUser : this.userList) {
+            if (currentUser.getLogin().equals(user.getLogin())) {
+                currentUser.setName(user.getName());
+                currentUser.setSurname(user.getSurname());
+                return currentUser;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User updateUserPass(User user) {
+        for (User currentUser: this.userList){
+            if(currentUser.getLogin().equals(user.getLogin())){
+                currentUser.setPass(DigestUtils.md5Hex(user.getPass()));
+                return currentUser;
+            }
+        }
+        return null;
+    }
 }
