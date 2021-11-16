@@ -63,13 +63,13 @@ font-family: Arial, sans-serif;
 <h1>Books</h1>
 <div id="menu">
     <a href="/main">Strona główna</a>
-    <a href="/java">Java</a>
-    <a href="/other">Inne</a>
+    <a href="/main?category=java">Java</a>
+    <a href="/main?category=other">Inne</a>
     <a href="/contact">Kontakt</a>
     <a href="/login">Moje konto</a>
     <a href="/logout">Wyloguj się</a>
 </div>
-<form id="filter" method="post" action="/main/filter">
+<form id="filter" method="post" action="/filter">
     <input type="text" placeholder="filtruj" name="filter">
     <input type="submit" value="ok">
 </form>
