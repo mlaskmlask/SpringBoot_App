@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 
 @Controller
@@ -97,6 +96,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register(Model model) {
         model.addAttribute("registerModel", new UserRegistrationData());
+        model.addAttribute("user", this.sessionObject.getUser());
         String info = this.sessionObject.getInfo();
         if(info!= null){
             model.addAttribute("info", info);

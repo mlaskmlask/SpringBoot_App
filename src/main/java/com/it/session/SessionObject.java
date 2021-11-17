@@ -7,9 +7,9 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 @SessionScope
 public class SessionObject {
-    private User user = null;
+    private User user=null;
     private String info = null;
-    private String filter = null;
+    private String filter=null;
 
     public boolean isLogged() {
         return !(this.user == null);

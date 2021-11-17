@@ -22,29 +22,30 @@ public class CommonController {
     SessionObject sessionObject;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String commonRedirect() {
+    public String commonRedirect(Model model) {
         return "redirect:/main";
     }
 
     @RequestMapping(value = "main", method = RequestMethod.GET)
     public String main(Model model, @RequestParam(defaultValue = "none") String category) {
-        switch (category){
+        switch (category) {
             case "java":
-                model.addAttribute("books", this.bookRepository.getJavaBooks());
+                model.addAttribute("books", FilterUtils.filteredBooks(this.bookRepository.getJavaBooks(),
+                        this.sessionObject.getFilter()));
+                model.addAttribute("user", this.sessionObject.getUser());
                 return "main";
             case "other":
-                model.addAttribute("books", this.bookRepository.getOtherBooks());
+                model.addAttribute("books",
+                        FilterUtils.filteredBooks(this.bookRepository.getOtherBooks(), this.sessionObject.getFilter()));
+                model.addAttribute("user", this.sessionObject.getUser());
                 return "main";
             default:
-                if(this.sessionObject.getFilter()==null){
-                model.addAttribute("books", this.bookRepository.getAllBooks());
-                }else{
-                model.addAttribute("books",
-                        FilterUtils.filteredBooks(this.bookRepository.getAllBooks(),
-                                this.sessionObject.getFilter()));
-                }
+                    model.addAttribute("books",
+                            FilterUtils.filteredBooks(this.bookRepository.getAllBooks(),
+                                    this.sessionObject.getFilter()));
                 break;
         }
+       model.addAttribute("user", this.sessionObject.getUser());
         return "main";
     }
 
@@ -55,8 +56,8 @@ public class CommonController {
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
-    public String contact() {
-
+    public String contact(Model model) {
+        model.addAttribute("user", this.sessionObject.getUser());
         return "contact";
     }
 }
