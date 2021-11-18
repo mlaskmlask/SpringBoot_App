@@ -60,4 +60,5 @@ public class CommonController {
         model.addAttribute("user", this.sessionObject.getUser());
         return "contact";
     }
+
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <script src="loginValidator.js"></script>
 <style>
     body{
 background-image: url(cosmos.jpg);
@@ -84,10 +85,10 @@ font-size: 15px;
     <a href="/contact">Kontakt</a>
     <a href="/login">Moje konto</a>
 </div>
-<form id="login-form" method="post">
+<form name="loginForm" id="login-form" method="post" onsubmit="return validate()">
     <div th:if="${info != null}" th:text="${info}" id="info"></div>
-    <input type="text" placeholder="login" class="input" th:field="*{userModel.login}">
-    <input type="password" placeholder="pass" class="input" th:field="*{userModel.pass}">
+    <input type="text" placeholder="login" class="input" th:field="*{userModel.login}" name="login">
+    <input type="password" placeholder="pass" class="input" th:field="*{userModel.pass}" name="pass">
     <input type="submit" value="Zaloguj się!" id="submit">
     <a href="/register" id="register">Zarejestruj się</a>
 </form>

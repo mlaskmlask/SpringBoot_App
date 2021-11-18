@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Moje konto</title>
-
+<script src="editProfileValidator.js"></script>
     <style>
         body{
 background-image: url(/cosmos.jpg);
@@ -75,7 +75,6 @@ font-family: Arial, sans-serif;
 text-align: center;
 font-size: 15px;
 }
-
     </style>
 </head>
 <body>
@@ -89,17 +88,17 @@ font-size: 15px;
     <a href="/logout">Wyloguj się</a>
 </div>
 
-<form id="edit-data-form" method="post" action="/changedata">
-    <input type="text" placeholder="Imię" class="input" th:field="*{user.name}">
-    <input type="text" placeholder="Nazwisko" class="input" th:field="*{user.surname}">
+<form id="edit-data-form" method="post" action="/changedata" name="dataForm" onsubmit="return validateData()">
+    <input type="text" placeholder="Imię" class="input" th:field="*{user.name}" name="name">
+    <input type="text" placeholder="Nazwisko" class="input" th:field="*{user.surname}"name="surname">
     <input type="submit" value="Zmień dane!" class="submit">
 </form>
 
-<form id="change-pass-form" method="post" action="/changepass">
+<form id="change-pass-form" method="post" action="/changepass" name="passForm" onsubmit="return validatePass()">
     <div th:if="${info != null}" th:text="${info}" id="info"></div>
-    <input type="password" placeholder="Hasło" class="input" th:field="*{passModel.pass}">
-    <input type="password" placeholder="Nowe hasło" class="input" th:field="*{passModel.newPass}">
-    <input type="password" placeholder="Powtórz nowe hasło" class="input" th:field="*{passModel.repeatedNewPass}">
+    <input type="password" placeholder="Hasło" class="input" th:field="*{passModel.pass}" id="currentPass">
+    <input type="password" placeholder="Nowe hasło" class="input" th:field="*{passModel.newPass}" id="newPas">
+    <input type="password" placeholder="Powtórz nowe hasło" class="input" th:field="*{passModel.repeatedNewPass}" id="newPass2">
     <input type="submit" value="Zmień dane!" class="submit">
 </form>
 

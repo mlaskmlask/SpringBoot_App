@@ -1,5 +1,6 @@
 package com.it.controllers;
 
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import com.it.database.IUserRepository;
 import com.it.model.User;
 import com.it.model.model.ChangePassData;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
@@ -33,6 +36,14 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String authenticate(@ModelAttribute User user) {
+        Pattern regexPattern = Pattern.compile(".{3}.*");
+        Matcher loginMatcher = regexPattern.matcher(user.getLogin());
+        Matcher passMatcher = regexPattern.matcher(user.getPass());
+
+        if(!loginMatcher.matches()|| !passMatcher.matches()){
+            this.sessionObject.setInfo("Nieprawidłowe dane");
+            return "redirect:/login";
+        }
         User loggedUser = userRepository.authenticate(user);
         if (loggedUser != null) {
             this.sessionObject.setUser(loggedUser);
@@ -57,6 +68,13 @@ public class UserController {
 
     @RequestMapping(value = "/changedata", method = RequestMethod.POST)
     public String changeData(@ModelAttribute User user) {
+
+        Pattern regexPattern = Pattern.compile("[A-Z]{1}[A-Za-z]*");
+        Matcher nameMatcher = regexPattern.matcher(user.getName());
+        Matcher surnameMatcher = regexPattern.matcher(user.getSurname());
+if(!nameMatcher.matches() || !surnameMatcher.matches()){
+    return "redirect:/myaccount";
+}
         user.setLogin(this.sessionObject.getUser().getLogin());
         User updatedUser = this.userRepository.updateUserData(user);
         this.sessionObject.setUser(updatedUser);
@@ -65,6 +83,11 @@ public class UserController {
 
     @RequestMapping(value = "/changepass", method = RequestMethod.POST)
     public String changePass(@ModelAttribute ChangePassData changePassData, Model model) {
+
+        Pattern regexPattern = Pattern.compile(".{3}.*");
+        Matcher currentPassMatcher = regexPattern.matcher(changePassData.getPass());
+        Matcher newPassMatcher = regexPattern.matcher(changePassData.getNewPass());
+
 
         if (!changePassData.getNewPass().equals(changePassData.getRepeatedNewPass())) {
             this.sessionObject.setInfo("Nieprawidłowo powtórzone hasło");
@@ -76,7 +99,7 @@ public class UserController {
 
         User authenticatedUser = this.userRepository.authenticate(user);
 
-        if (authenticatedUser == null) {
+        if (authenticatedUser == null || !currentPassMatcher.matches()|| !newPassMatcher.matches()) {
             this.sessionObject.setInfo("Nieprawidłowe hasło!");
             return "redirect:/myaccount";
         }
