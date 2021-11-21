@@ -47,4 +47,14 @@ public class BookRepositoryImpl implements IBookRepository {
         }
         return otherBooks;
     }
+
+    @Override
+    public Book getBookByISBN(String isbn) {
+        for (Book book: this.books){
+            if(book.getIsbn().equals(isbn)){
+                return book;
+            }
+        }
+        return null;
+    }
 }

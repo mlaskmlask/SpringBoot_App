@@ -70,8 +70,13 @@ public class Book {
         this.category = category;
     }
 
-    public enum Category{
+    public enum Category {
         JAVA,
         OTHER
+    }
+
+    @Override
+    public Object clone(){
+        return new Book(this.title, this.author, this.price, this.pieces, this.isbn, this.category);
     }
 }
