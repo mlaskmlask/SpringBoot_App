@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+
 public class UserRepositoryImpl implements IUserRepository {
 
     private final List<User> userList = new ArrayList<>();
     UserRepositoryImpl() {
-        userList.add(new User("Maja", "Laskowska", "admin", DigestUtils.md5Hex("admin")));
-        userList.add(new User("Jan", "Kowalski", "jan", DigestUtils.md5Hex("jan")));
+        //userList.add(new User("Maja", "Laskowska", "admin", DigestUtils.md5Hex("admin")));
+        //userList.add(new User("Jan", "Kowalski", "jan", DigestUtils.md5Hex("jan")));
     }
 
     @Override

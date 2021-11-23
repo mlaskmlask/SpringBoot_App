@@ -139,7 +139,7 @@ if(!nameMatcher.matches() || !surnameMatcher.matches()){
             this.sessionObject.setInfo("Login zajęty");
             return "redirect:/register";
         }
-        User user = new User(userRegistrationData.getName(),
+        User user = new User(0, userRegistrationData.getName(),
                 userRegistrationData.getSurname(),
                 userRegistrationData.getLogin(),
                 DigestUtils.md5Hex(userRegistrationData.getPass()));
