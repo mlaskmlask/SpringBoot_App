@@ -2,6 +2,7 @@ package com.it.model;
 
 
 public class Book {
+    private int id;
     private String title;
     private String author;
     private double price;
@@ -13,7 +14,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String author, double price, int pieces, String isbn, Category category) {
+    public Book(int id, String title, String author, double price, int pieces, String isbn, Category category) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
@@ -66,6 +68,14 @@ public class Book {
         return category;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -77,6 +87,6 @@ public class Book {
 
     @Override
     public Object clone(){
-        return new Book(this.title, this.author, this.price, this.pieces, this.isbn, this.category);
+        return new Book(this.id, this.title, this.author, this.price, this.pieces, this.isbn, this.category);
     }
 }

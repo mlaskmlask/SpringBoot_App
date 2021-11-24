@@ -72,9 +72,12 @@ public class UserController {
         Pattern regexPattern = Pattern.compile("[A-Z]{1}[A-Za-z]*");
         Matcher nameMatcher = regexPattern.matcher(user.getName());
         Matcher surnameMatcher = regexPattern.matcher(user.getSurname());
-if(!nameMatcher.matches() || !surnameMatcher.matches()){
-    return "redirect:/myaccount";
-}
+
+        if(!nameMatcher.matches() || !surnameMatcher.matches()){
+            this.sessionObject.setInfo("Nieprawidłowe dane!");
+            return "redirect:/myaccount";
+        }
+
         user.setLogin(this.sessionObject.getUser().getLogin());
         User updatedUser = this.userRepository.updateUserData(user);
         this.sessionObject.setUser(updatedUser);

@@ -49,10 +49,11 @@ public class JDBCUserRepositoryImpl implements IUserRepository {
         try {
             String SQL = "UPDATE tuser SET pass=? WHERE login=?";
             PreparedStatement preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setString(1, user.getPass());
+            preparedStatement.setString(1, DigestUtils.md5Hex(user.getPass()));
             preparedStatement.setString(2, user.getLogin());
             preparedStatement.executeUpdate();
             return this.getUser(user.getLogin());
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

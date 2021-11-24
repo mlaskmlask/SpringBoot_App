@@ -9,4 +9,5 @@ public interface IBookRepository {
     List<Book> getJavaBooks();
     List<Book> getOtherBooks();
     Book getBookByISBN(String isbn);
+    void addBook (Book book);
 }
