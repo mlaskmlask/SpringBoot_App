@@ -2,6 +2,7 @@ package com.it.controllers;
 
 import com.it.database.IBookRepository;
 import com.it.model.Book;
+import com.it.services.IBookService;
 import com.it.session.SessionObject;
 import com.utils.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class CommonController {
 
     @Resource
     SessionObject sessionObject;
+
+    @Autowired
+    IBookService bookService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String commonRedirect(Model model) {
@@ -40,12 +44,12 @@ public class CommonController {
                 model.addAttribute("user", this.sessionObject.getUser());
                 return "main";
             default:
-                    model.addAttribute("books",
-                            FilterUtils.filteredBooks(this.bookRepository.getAllBooks(),
-                                    this.sessionObject.getFilter()));
+                model.addAttribute("books",
+                        FilterUtils.filteredBooks(this.bookRepository.getAllBooks(),
+                                this.sessionObject.getFilter()));
                 break;
         }
-       model.addAttribute("user", this.sessionObject.getUser());
+        model.addAttribute("user", this.sessionObject.getUser());
         return "main";
     }
 
@@ -61,4 +65,16 @@ public class CommonController {
         return "contact";
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addBookForm(Model model) {
+        model.addAttribute("book", new Book());
+        return "add";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addBook(@ModelAttribute Book book) {
+        this.bookService.addBook(book);
+        return "redirect:/add";
+
+    }
 }

@@ -2,6 +2,7 @@ package com.it.controllers;
 
 import com.it.database.IBookRepository;
 import com.it.model.Book;
+import com.it.services.IBasketService;
 import com.it.session.SessionObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,29 +22,20 @@ public class BasketController {
     @Resource
     SessionObject sessionObject;
 
-    @RequestMapping(value = "/addtobasket/{isbn}", method = RequestMethod.GET)
-    public String addToBasket(@PathVariable String isbn) {
+    @Autowired
+    IBasketService basketService;
 
-        for(Book book: this.sessionObject.getBasket()){
-            if(book.getIsbn().equals(isbn)){
-                book.setPieces(book.getPieces()+1);
-                return "redirect:/main";
-            }
-        }
-        Book book = (Book) this.bookRepository.getBookByISBN(isbn).clone();
-        book.setPieces(1);
-        this.sessionObject.getBasket().add(book);
+    @RequestMapping(value = "/addtobasket/{id}", method = RequestMethod.GET)
+    public String addToBasket(@PathVariable int id) {
+
+        this.basketService.addToBasket(id);
         return "redirect:/main";
     }
 
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
     public String basket(Model model) {
         model.addAttribute("books", this.sessionObject.getBasket());
-        double bill = 0;
-        for(Book book: this.sessionObject.getBasket()){
-            bill = bill + book.getPrice()*book.getPieces();
-        }
-        model.addAttribute("bill", bill);
+        model.addAttribute("bill", this.basketService.calculateBill());
         return "basket";
     }
 }

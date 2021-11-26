@@ -87,7 +87,7 @@ font-family: Arial, sans-serif;
     <div id="book-div">
         <p id="title" th:text="${book.title}"></p>
         <p th:text="${book.author}"></p>
-        <a th:href="@{/addtobasket/{isbn}(isbn=${book.isbn})}" ></a>
+        <a th:href="@{/addtobasket/{id}(id=${book.id})}" ></a>
         <div id="info">
             <p th:text="'Ilość: ' + ${book.pieces}"></p>
             <p th:text="'ISBN: ' + ${book.isbn}"></p>

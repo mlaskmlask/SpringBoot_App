@@ -27,15 +27,7 @@ public class JDBCBookRepositoryImpl implements IBookRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setPieces(resultSet.getInt("pieces"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
-                book.setCategory(Book.Category.valueOf(resultSet.getString("category")));
-                books.add(book);
+                books.add(this.mapResultSetToBook(resultSet));
             }
 
         } catch (SQLException throwables) {
@@ -53,15 +45,7 @@ public class JDBCBookRepositoryImpl implements IBookRepository {
             preparedStatement.setString(1, Book.Category.JAVA.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setPieces(resultSet.getInt("pieces"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
-                book.setCategory(Book.Category.valueOf(resultSet.getString("category")));
-                javaBooks.add(book);
+                javaBooks.add(this.mapResultSetToBook(resultSet));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -78,15 +62,7 @@ public class JDBCBookRepositoryImpl implements IBookRepository {
             preparedStatement.setString(1, Book.Category.OTHER.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setPieces(resultSet.getInt("pieces"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
-                book.setCategory(Book.Category.valueOf(resultSet.getString("category")));
-                otherBooks.add(book);
+                otherBooks.add(this.mapResultSetToBook(resultSet));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -102,15 +78,7 @@ public class JDBCBookRepositoryImpl implements IBookRepository {
             preparedStatement.setString(1, isbn);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setPieces(resultSet.getInt("pieces"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
-                book.setCategory(Book.Category.valueOf(resultSet.getString("category")));
-                return book;
+                return this.mapResultSetToBook(resultSet);
 
             } else {
                 return null;
@@ -137,5 +105,17 @@ public class JDBCBookRepositoryImpl implements IBookRepository {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private Book mapResultSetToBook(ResultSet resultSet) throws SQLException{
+        Book book = new Book();
+        book.setId(resultSet.getInt("id"));
+        book.setTitle(resultSet.getString("title"));
+        book.setAuthor(resultSet.getString("author"));
+        book.setPieces(resultSet.getInt("pieces"));
+        book.setIsbn(resultSet.getString("isbn"));
+        book.setPrice(resultSet.getDouble("price"));
+        book.setCategory(Book.Category.valueOf(resultSet.getString("category")));
+        return book;
     }
 }
