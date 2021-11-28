@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class BookDAOImpl implements IBookDAO {
@@ -82,6 +84,39 @@ public class BookDAOImpl implements IBookDAO {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Book> getBooksByCategory(Book.Category category) {
+        List <Book> books = new ArrayList<>();
+        try{
+            String SQL = "SELECT * FROM tbook WHERE category=?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(SQL);
+            preparedStatement.setString(1, category.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                books.add(this.mapResultSetToBook(resultSet));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getAllBooks() {
+        List <Book> books = new ArrayList<>();
+        try{
+            String SQL = "SELECT * FROM tbook";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(SQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                books.add(this.mapResultSetToBook(resultSet));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return books;
     }
 
     private Book mapResultSetToBook(ResultSet resultSet) throws SQLException{

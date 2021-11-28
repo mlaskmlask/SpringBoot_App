@@ -5,12 +5,14 @@ import com.it.database.IUserRepository;
 import com.it.model.User;
 import com.it.model.model.ChangePassData;
 import com.it.model.model.UserRegistrationData;
+import com.it.services.IUserService;
 import com.it.session.SessionObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +25,9 @@ public class UserController {
 
     @Autowired
     IUserRepository userRepository;
+
+    @Autowired
+    IUserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
@@ -40,19 +45,18 @@ public class UserController {
         Matcher loginMatcher = regexPattern.matcher(user.getLogin());
         Matcher passMatcher = regexPattern.matcher(user.getPass());
 
-        if(!loginMatcher.matches()|| !passMatcher.matches()){
+        if (!loginMatcher.matches() || !passMatcher.matches()) {
             this.sessionObject.setInfo("Nieprawidłowe dane");
             return "redirect:/login";
         }
-        User loggedUser = userRepository.authenticate(user);
-        if (loggedUser != null) {
-            this.sessionObject.setUser(loggedUser);
+
+        this.sessionObject.setUser(this.userService.authenticate(user));
+        if (this.sessionObject.getUser() != null) {
             return "redirect:/myaccount";
         } else {
             this.sessionObject.setInfo("Nieprawidłowe dane");
             return "redirect:/login";
         }
-
     }
 
     @RequestMapping(value = "/myaccount", method = RequestMethod.GET)
@@ -73,43 +77,31 @@ public class UserController {
         Matcher nameMatcher = regexPattern.matcher(user.getName());
         Matcher surnameMatcher = regexPattern.matcher(user.getSurname());
 
-        if(!nameMatcher.matches() || !surnameMatcher.matches()){
+        if (!nameMatcher.matches() || !surnameMatcher.matches()) {
             this.sessionObject.setInfo("Nieprawidłowe dane!");
             return "redirect:/myaccount";
         }
-
-        user.setLogin(this.sessionObject.getUser().getLogin());
-        User updatedUser = this.userRepository.updateUserData(user);
-        this.sessionObject.setUser(updatedUser);
+        this.userService.updateUserData(user);
         return "redirect:/myaccount";
     }
 
     @RequestMapping(value = "/changepass", method = RequestMethod.POST)
-    public String changePass(@ModelAttribute ChangePassData changePassData, Model model) {
+    public String changePass(@ModelAttribute ChangePassData changePassData) {
 
         Pattern regexPattern = Pattern.compile(".{3}.*");
         Matcher currentPassMatcher = regexPattern.matcher(changePassData.getPass());
         Matcher newPassMatcher = regexPattern.matcher(changePassData.getNewPass());
-
-
-        if (!changePassData.getNewPass().equals(changePassData.getRepeatedNewPass())) {
-            this.sessionObject.setInfo("Nieprawidłowo powtórzone hasło");
+        if (!currentPassMatcher.matches() || !newPassMatcher.matches()) {
+            this.sessionObject.setInfo("Nieprawidłowe dane!");
             return "redirect:/myaccount";
         }
-        User user = new User();
-        user.setPass(changePassData.getPass());
-        user.setLogin(this.sessionObject.getUser().getLogin());
-
-        User authenticatedUser = this.userRepository.authenticate(user);
-
-        if (authenticatedUser == null || !currentPassMatcher.matches()|| !newPassMatcher.matches()) {
-            this.sessionObject.setInfo("Nieprawidłowe hasło!");
-            return "redirect:/myaccount";
+        User updatedUser = this.userService.updateUserPass(changePassData);
+        if (updatedUser != null) {
+            this.sessionObject.setUser(updatedUser);
+        } else {
+            this.sessionObject.setInfo("Zmiana hasła nieudana!");
         }
 
-        user.setPass(changePassData.getNewPass());
-        User updatedUser = this.userRepository.updateUserPass(user);
-        this.sessionObject.setUser(updatedUser);
         return "redirect:/myaccount";
     }
 
@@ -123,11 +115,6 @@ public class UserController {
     public String register(Model model) {
         model.addAttribute("registerModel", new UserRegistrationData());
         model.addAttribute("user", this.sessionObject.getUser());
-        String info = this.sessionObject.getInfo();
-        if(info!= null){
-            model.addAttribute("info", info);
-            this.sessionObject.setInfo(null);
-        }
         return "register";
     }
 
@@ -137,16 +124,13 @@ public class UserController {
             this.sessionObject.setInfo("Nieprawidłowo powtórzone hasła");
             return "redirect:/register";
         }
-        boolean checkResult = this.userRepository.checkIfLoginExists(userRegistrationData.getLogin());
-        if (checkResult) {
+
+        boolean checkResult = this.userService.registerUser(userRegistrationData);
+        if (!checkResult) {
             this.sessionObject.setInfo("Login zajęty");
             return "redirect:/register";
         }
-        User user = new User(0, userRegistrationData.getName(),
-                userRegistrationData.getSurname(),
-                userRegistrationData.getLogin(),
-                DigestUtils.md5Hex(userRegistrationData.getPass()));
-        this.userRepository.addUser(user);
+
 
         this.sessionObject.setInfo("Rejestracja udana!");
         return "redirect:/login";

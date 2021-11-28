@@ -16,9 +16,6 @@ import java.util.List;
 @Controller
 public class CommonController {
 
-    @Autowired
-    IBookRepository bookRepository;
-
     @Resource
     SessionObject sessionObject;
 
@@ -32,23 +29,8 @@ public class CommonController {
 
     @RequestMapping(value = "main", method = RequestMethod.GET)
     public String main(Model model, @RequestParam(defaultValue = "none") String category) {
-        switch (category) {
-            case "java":
-                model.addAttribute("books", FilterUtils.filteredBooks(this.bookRepository.getJavaBooks(),
-                        this.sessionObject.getFilter()));
-                model.addAttribute("user", this.sessionObject.getUser());
-                return "main";
-            case "other":
-                model.addAttribute("books",
-                        FilterUtils.filteredBooks(this.bookRepository.getOtherBooks(), this.sessionObject.getFilter()));
-                model.addAttribute("user", this.sessionObject.getUser());
-                return "main";
-            default:
-                model.addAttribute("books",
-                        FilterUtils.filteredBooks(this.bookRepository.getAllBooks(),
-                                this.sessionObject.getFilter()));
-                break;
-        }
+        model.addAttribute("books", this.bookService.getBooksByCategory(category));
+        model.addAttribute("filter", this.sessionObject.getFilter());
         model.addAttribute("user", this.sessionObject.getUser());
         return "main";
     }
