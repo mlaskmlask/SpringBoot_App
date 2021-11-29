@@ -1,14 +1,12 @@
 package com.it.services.impl;
 
 import com.it.dao.IBookDAO;
-import com.it.database.IBookRepository;
 import com.it.model.Book;
 import com.it.services.IBookService;
 import com.it.session.SessionObject;
 import com.utils.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.List;
 

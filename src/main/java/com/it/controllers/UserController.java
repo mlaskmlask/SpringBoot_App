@@ -1,7 +1,5 @@
 package com.it.controllers;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
-import com.it.database.IUserRepository;
 import com.it.model.User;
 import com.it.model.model.ChangePassData;
 import com.it.model.model.UserRegistrationData;
@@ -22,9 +20,6 @@ public class UserController {
 
     @Resource
     SessionObject sessionObject;
-
-    @Autowired
-    IUserRepository userRepository;
 
     @Autowired
     IUserService userService;

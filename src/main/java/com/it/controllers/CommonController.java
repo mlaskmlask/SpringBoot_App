@@ -1,10 +1,8 @@
 package com.it.controllers;
 
-import com.it.database.IBookRepository;
 import com.it.model.Book;
 import com.it.services.IBookService;
 import com.it.session.SessionObject;
-import com.utils.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

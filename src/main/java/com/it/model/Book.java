@@ -1,13 +1,18 @@
 package com.it.model;
 
+import javax.persistence.*;
 
+@Entity(name = "tbook")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String author;
     private double price;
     private int pieces;
     private String isbn;
+    @Enumerated(EnumType.STRING)
     private Category category;
 
 
@@ -86,7 +91,7 @@ public class Book {
     }
 
     @Override
-    public Object clone(){
+    public Object clone() {
         return new Book(this.id, this.title, this.author, this.price, this.pieces, this.isbn, this.category);
     }
 }

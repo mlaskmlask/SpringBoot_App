@@ -1,7 +1,5 @@
 package com.it.controllers;
 
-import com.it.database.IBookRepository;
-import com.it.model.Book;
 import com.it.services.IBasketService;
 import com.it.session.SessionObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,6 @@ import javax.annotation.Resource;
 @Controller
 public class BasketController {
 
-    @Autowired
-    IBookRepository bookRepository;
 
     @Resource
     SessionObject sessionObject;
