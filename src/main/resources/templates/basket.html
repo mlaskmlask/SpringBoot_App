@@ -42,12 +42,13 @@ color: white;
 font-family: Arial, sans-serif;
 margin: 2%;
 padding: 2px;
+float: left;
 }
 .book div{
 border-top: 1px solid white;
 }
 .title{
-width: 40%;
+width: 30%;
 }
 .pieces{
 width: 10%;
@@ -56,12 +57,12 @@ width: 10%;
 width: 15%;
 }
 .price2{
-width: 15%;
+width: 10%;
 }
 #none1{
 display: inline-block;
 visibility: hidden;
-width: 432px;
+width: 311px;
 margin: 2%;
 border: 1px solid white;
 padding: 2px;
@@ -76,6 +77,31 @@ border: 1px solid white;
 padding: 2px;
 float: left;
 }
+.remove{
+width: 111px;
+display: inline-block;
+background-color: rgb(0, 0, 0, 0.7);
+color: white;
+font-family: Arial, sans-serif;
+margin: 2%;
+padding: 2px;
+float: left;
+}
+#order-div{
+margin: 17%;
+}
+#order{
+background-color: rgb(0, 0, 0, 0.7);
+color: white;
+border: 3px solid black;
+font-family: Arial, sans-serif;
+padding: 1%;
+border-radius: 5px;
+cursor: pointer;
+text-decoration: none;
+float:right;
+}
+
     </style>
 </head>
 <body>
@@ -94,6 +120,7 @@ float: left;
         <div class="pieces">ilość</div>
         <div class="price1">Cena za sztukę</div>
         <div class="price2">Cena</div>
+        <div class="remove">Usuń</div>
     </div>
     <th:block th:each="book:${books}">
         <div class="basket-row">
@@ -101,14 +128,20 @@ float: left;
             <div class="pieces" th:text="${book.pieces}"></div>
             <div class="price1" th:text="${book.price}"></div>
             <div class="price2" th:text="${book.price*book.pieces}"></div>
+            <a th:href="@{/remove-book-from-basket/{id}(id=${book.id})}" class="remove">Usuń</a>
         </div>
     </th:block>
-        <div id="none1"></div>
-        <div id="none2"></div>
+    <div id="none1"></div>
+    <div id="none2"></div>
     <div class="basket-row">
         <div class="price1">Suma</div>
         <div class="price2" th:text="${bill}"></div>
+        <div class="remove"></div>
     </div>
+
+</div>
+<div id="order-div">
+    <a th:if="${not #lists.isEmpty(books)}" href="/confirm-order" id="order">Złóż zamówienie</a>
 </div>
 </body>
 </html>

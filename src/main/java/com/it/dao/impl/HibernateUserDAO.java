@@ -8,9 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Connection;
-import java.util.Optional;
+import javax.persistence.NoResultException;
 
 @Repository
 public class HibernateUserDAO implements IUserDAO {
@@ -23,7 +21,12 @@ public class HibernateUserDAO implements IUserDAO {
         Session session = this.sessionFactory.openSession();
         Query<User> query = session.createQuery("FROM com.it.model.User WHERE login= :login");
         query.setParameter("login", login);
-        User user = query.getSingleResult();
+        User user = null;
+        try {
+            user = query.getSingleResult();
+        } catch (NoResultException e){
+            System.out.println("Nie ma użytkownika o takim loginie!");
+        }
         session.close();
         return user;
     }

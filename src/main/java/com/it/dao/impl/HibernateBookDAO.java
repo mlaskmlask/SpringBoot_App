@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
@@ -21,7 +22,12 @@ public class HibernateBookDAO implements IBookDAO {
         Session session = this.sessionFactory.openSession();
         Query<Book> query = session.createQuery("FROM com.it.model.Book WHERE isbn= :isbn");
         query.setParameter("isbn", isbn);
-        Book book = query.getSingleResult();
+        Book book = null;
+        try{
+            book = query.getSingleResult();
+        } catch (NoResultException e){
+            System.out.println("Nie znaleziono książki!");
+        }
         session.close();
         return book;
     }
@@ -63,7 +69,12 @@ public class HibernateBookDAO implements IBookDAO {
         Session session = this.sessionFactory.openSession();
         Query<Book> query = session.createQuery("FROM com.it.model.Book WHERE id= :id");
         query.setParameter("id", id);
-        Book book = query.getSingleResult();
+        Book book = null;
+        try{
+           book = query.getSingleResult();
+        }catch (NoResultException e){
+            System.out.println("Nie znaleziono książki!");
+        }
         session.close();
         return book;
     }

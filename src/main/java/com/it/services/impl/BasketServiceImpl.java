@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class BasketServiceImpl implements IBasketService {
@@ -38,5 +39,20 @@ public class BasketServiceImpl implements IBasketService {
             bill = bill + book.getPrice()*book.getPieces();
         }
         return bill;
+    }
+
+    @Override
+    public void removeBookFromBasket(int id) {
+        for (Book book:this.sessionObject.getBasket()){
+            if (book.getId()==id){
+                this.sessionObject.getBasket().remove(book);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void confirmOrder() {
+        List<Book> orderedBooks = this.sessionObject.getBasket();
     }
 }
