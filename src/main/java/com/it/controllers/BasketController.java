@@ -44,6 +44,7 @@ public class BasketController {
 
     @RequestMapping(value = "/confirm-order", method = RequestMethod.GET)
     public String confirmOrder(){
+        this.basketService.confirmOrder();
         return "redirect:/main";
     }
 }

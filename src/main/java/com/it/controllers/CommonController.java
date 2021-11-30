@@ -30,6 +30,7 @@ public class CommonController {
         model.addAttribute("books", this.bookService.getBooksByCategory(category));
         model.addAttribute("filter", this.sessionObject.getFilter());
         model.addAttribute("user", this.sessionObject.getUser());
+        model.addAttribute("basket", this.sessionObject.getBasket());
         return "main";
     }
 
